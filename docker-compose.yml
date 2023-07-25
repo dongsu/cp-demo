@@ -595,7 +595,8 @@ services:
       CONNECT_CONFLUENT_METADATA_HTTP_AUTH_CREDENTIALS_PROVIDER: 'BASIC'
 
       # Secret Registry
-      CONNECT_CONFIG_PROVIDERS: 'file,secret,gsecret'
+      #CONNECT_CONFIG_PROVIDERS: 'file,secret,gsecret'
+      CONNECT_CONFIG_PROVIDERS: 'file,secret'
 
       CONNECT_CONFIG_PROVIDERS_FILE_CLASS: org.apache.kafka.common.config.provider.FileConfigProvider
 
