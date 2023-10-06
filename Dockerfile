@@ -30,9 +30,9 @@ RUN confluent-hub install --no-prompt jcustenborder/kafka-connect-json-schema:0.
 # Install Elasticsearch connector
 RUN confluent-hub install --no-prompt confluentinc/kafka-connect-elasticsearch:11.0.0
 
-COPY connect/csid-config-provider-gcloud/confluent-csid-secrets-provider-gcloud-1.0.7-SNAPSHOT.zip /home/appuser/
-RUN confluent-hub install --no-prompt /home/appuser/confluent-csid-secrets-provider-gcloud-1.0.7-SNAPSHOT.zip
-RUN rm -f /home/appuser/confluent-csid-secrets-provider-gcloud-1.0.7-SNAPSHOT.zip
+COPY connect/csid-config-provider-gcloud/confluentinc-csid-secrets-provider-gcloud-1.0.9-SNAPSHOT.zip /home/appuser/
+RUN confluent-hub install --no-prompt /home/appuser/confluentinc-csid-secrets-provider-gcloud-1.0.9-SNAPSHOT.zip
+RUN rm -f /home/appuser/confluentinc-csid-secrets-provider-gcloud-1.0.9-SNAPSHOT.zip
 
 
 # Stage 2 -- copy jars
