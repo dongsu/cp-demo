@@ -454,7 +454,21 @@ services:
       KAFKA_PASSWORD_ENCODER_SECRET: encoder-secret
 
 
+# to run the docker composer, you need to copy "gcp-key.json" file under "scripts/security" directory.
+# $ cp <your-google-service-account-key.json ./scripts/security/gcp-key.json
+# then you can run
+# ./scripts/start.sh
 
+# to build the image, run:
+# $ source env.sh
+# $ docker build --build-arg CP_VERSION=${CONFLUENT_DOCKER_TAG} --build-arg REPOSITORY=$REPOSITORY -t localbuild/connect:${CONFLUENT_DOCKER_TAG}-${CONNECTOR_VERSION}  .
+#
+# to stop the connect only run:
+# $ docker-compose rm -sf connect
+#
+# to start/recreate the connect only run:
+# $ docker-compose up --no-recreate connect -d
+#
   connect:
     image: localbuild/connect:${CONFLUENT_DOCKER_TAG}-${CONNECTOR_VERSION}
     container_name: connect
@@ -470,6 +484,8 @@ services:
       schemaregistry:
         condition: service_healthy
     volumes:
+      # make sure you have gcp-key.json file
+      # ./scripts/security/gcp-key.json
       - ./scripts/security:/etc/kafka/secrets
       - ./scripts/security/keypair:/tmp/conf
     ports:
@@ -497,8 +513,10 @@ services:
 
       CONNECT_REST_ADVERTISED_HOST_NAME: connect
       CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components"
-      CONNECT_LOG4J_ROOT_LOGLEVEL: INFO
-      CONNECT_LOG4J_LOGGERS: org.reflections=ERROR
+#      CONNECT_LOG4J_OPTS: "-Dlog4j.configuration=file:/logs/log4j.properties"
+#      CONNECT_LOG4J_ROOT_LOGLEVEL: DEBUG
+##      CONNECT_LOG4J_LOGGERS: "org.apache.kafka.connect=DEBUG,log4j.root.loglevel=DEBUG"
+#      CONNECT_LOG4J_LOGGERS: org.reflections=ERROR
       CLASSPATH: "/usr/share/java/monitoring-interceptors/*"
 
       # Connect Worker
@@ -594,9 +612,18 @@ services:
       CONNECT_CONFLUENT_METADATA_BASIC_AUTH_USER_INFO: 'connectAdmin:connectAdmin'
       CONNECT_CONFLUENT_METADATA_HTTP_AUTH_CREDENTIALS_PROVIDER: 'BASIC'
 
+      # logger
+      CONNECT_LOG4J_ROOT_LOGLEVEL: DEBUG
+      #      CONNECT_LOG4J_LOGGERS: "org.apache.kafka.connect=DEBUG,log4j.root.loglevel=DEBUG"
+      CONNECT_LOG4J_LOGGERS: org.reflections=ERROR
+
+      # license
+#      confluent.license: "license-key-file-text-here"
+
       # Secret Registry
-      #CONNECT_CONFIG_PROVIDERS: 'file,secret,gsecret'
-      CONNECT_CONFIG_PROVIDERS: 'file,secret'
+      CONNECT_CONFIG_PROVIDERS: 'file,secret,gsecret'
+#      CONNECT_CONFIG_PROVIDERS: 'file,secret'
+
 
       CONNECT_CONFIG_PROVIDERS_FILE_CLASS: org.apache.kafka.common.config.provider.FileConfigProvider
 

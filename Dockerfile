@@ -39,3 +39,17 @@ RUN rm -f /home/appuser/confluentinc-csid-secrets-provider-gcloud-1.0.9-SNAPSHOT
 FROM $REPOSITORY/cp-server-connect:$CP_VERSION
 
 COPY --from=install-connectors /usr/share/confluent-hub-components/ /usr/share/confluent-hub-components/
+
+
+# to compare the jar files, you can run
+# $ ls -1 ./connect/workspace/csid-secrets-providers/gcloud/target/components/packages/confluentinc-csid-secrets-provider-gcloud-1.0.9-SNAPSHOT/confluentinc-csid-secrets-provider-gcloud-1.0.9-SNAPSHOT/lib
+# $ docker exec -it connect sh -c 'ls -1 /usr/share/java/confluent-hub-client'
+# $ docker exec -it connect sh -c 'ls -1  /usr/share/java/confluent-security/connect/'
+#
+RUN rm -f /usr/share/confluent-hub-components/confluentinc-csid-secrets-provider-gcloud/google-auth-library-credentials-1.16.0.jar \
+/usr/share/confluent-hub-components/confluentinc-csid-secrets-provider-gcloud/google-auth-library-oauth2-http-1.16.0.jar \
+/usr/share/confluent-hub-components/confluentinc-csid-secrets-provider-gcloud/google-http-client-1.43.1.jar \
+/usr/share/confluent-hub-components/confluentinc-csid-secrets-provider-gcloud/google-http-client-gson-1.43.1.jar \
+/usr/share/confluent-hub-components/confluentinc-csid-secrets-provider-gcloud/grpc-googleapis-1.54.0.jar \
+/usr/share/confluent-hub-components/confluentinc-csid-secrets-provider-gcloud/proto-google-common-protos-2.17.0.jar \
+/usr/share/confluent-hub-components/confluentinc-csid-secrets-provider-gcloud/proto-google-iam-v1-1.12.0.jar
